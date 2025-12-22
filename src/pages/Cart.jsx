@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useCart } from "../context/CartContext";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuNotebookText } from "react-icons/lu";
@@ -7,9 +7,10 @@ import { GiShoppingBag } from "react-icons/gi";
 import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import emptyCart from "../assets/empty-cart.png";
+import { toast } from "react-toastify";
 
 const Cart = ({ location, getLocation }) => {
-  const { cartItem, updateQuantity, deleteItem } = useCart();
+  const { cartItem, setCartItem, updateQuantity, deleteItem } = useCart();
   const { user } = useUser();
   const navigate = useNavigate();
 
@@ -201,7 +202,14 @@ const Cart = ({ location, getLocation }) => {
                     </button>
                   </div>
                 </div>
-                <button className="bg-red-500 text-white px-3 py-2 rounded-md w-full cursor-pointer mt-3">
+                <button
+                  onClick={() => {
+                    toast.success("Order is places");
+                    navigate("/");
+                    setCartItem([]);
+                  }}
+                  className="bg-red-500 text-white px-3 py-2 rounded-md w-full cursor-pointer mt-3"
+                >
                   Proceed to Checkout
                 </button>
               </div>
